@@ -1,14 +1,6 @@
 {   
-    "$id": "#",
+    "$id": "https://minhhvo.github.io/schemas/bibtex.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$vocabulary": {
-        "https://json-schema.org/draft/2020-12/vocab/core": true,
-        "https://json-schema.org/draft/2020-12/vocab/applicator": true,
-        "https://json-schema.org/draft/2020-12/vocab/validation": true,
-        "https://json-schema.org/draft/2020-12/vocab/meta-data": true,
-        "https://json-schema.org/draft/2020-12/vocab/format-annotation": true,
-        "https://json-schema.org/draft/2020-12/meta/hyper-schema": true
-    },
     
     "title": "Modified BibTex Entry Data Transfer Object (DTO) Schema",
     "description": "Representation of all BibTex entry types",
@@ -19,21 +11,18 @@
         "citeKey":{
             "type": "string",
             "description": "The primary key (metakey) within a bibliography being used to uniquely identify a citation entry.",
-            "$comment": "@FUTURE: Consider (first) develop a t-string for citeKey that guarantees uniqueness, (second) tuple validation for the citeKey string, compliant with the APA7 (preferred) format and grammar."
+            "pattern": "^[a-zA-Z]+[0-9]{4}[a-z]?$"
         },
         "class": {
-            "type": "string",
-            "description": "The type of creative work being included in the bibliography. This is a required field, and must be one of the BibTex entry types.",
-            "$ref": "#/$defs/entryType"
+            "$ref": "#/$defs/entryType", "type": "string",
+            "description": "The type of creative work being included in the bibliography. This is a required field, and must be one of the BibTex entry types."
         },
 
         "fields": { 
             "type": "object", 
             "description": "The payload container for BibTeX domain data. The specific allowed fields, required properties, and data types are dynamically delegated based on the evaluated entry class.",
             "minProperties": 1,
-            "$comment": "FUTURE: Revisit and revise the preset threshold value (why / why not: 'minProperties = 1'?).",
             "unevaluatedProperties": false
-
         }
     },
 
@@ -582,8 +571,7 @@
                 "webIdentifier": { "$ref": "#/$defs/F_webIdentifier" },
                 "year": { "$ref": "#/$defs/F_year" }
             },
-            "required": ["title", "year"]
-            
+            "required": ["title", "year"] 
         },
 
         "author": {
