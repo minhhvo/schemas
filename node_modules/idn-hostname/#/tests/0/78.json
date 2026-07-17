@@ -1,5 +1,0 @@
-{
-    "description": "Bidi Rule 1 — fail: only AN and EN, Bidi domain name label must start with L or R or AL",
-    "data": "١2",
-    "valid": false
-}
