@@ -1,0 +1,289 @@
+{
+    "$id": "https://minhhvo.github.io/schemas/v1/entry-models.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+    "title":"Schema for 14 of Standard BibTeX Entry Models",
+    "type": "object",
+    "$defs": {
+        "baseModel": {
+            "$anchor": "base",
+            "type": "object",
+            "description": "Abstract base schema containing properties shared across all bibliographic models.",
+            "properties": {
+                    "title": { "$ref": "fields.json#field.title" },
+                    "year": { "$ref": "fields.json#field.year" },
+                    "month": { "$ref": "fields.json#field.month" },
+                    "key": { "$ref": "fields.json#field.key" },
+                    "note": { "$ref": "fields.json#field.note" },
+                    "annote": { "$ref": "fields.json#field.annote" },
+                    "webIdentifier": { "$ref": "fields.json#field.webIdentifier" }
+                }
+        },
+        "@article": {
+            "$anchor": "article", "title": "@ARTICLE sub-schema",
+            "type": "object", "allOf": [ { "$ref": "#base" } ],
+            "properties": {
+                "authors": { "$ref": "fields.json#field.authors" },
+                "journal": { "$ref": "fields.json#field.journal" },
+                "type": { "$ref": "fields.json#field.type" },
+                "chapter": { "$ref": "fields.json#field.chapter" },
+                "collectionTitle": { "$ref": "fields.json#field.collectionTitle" },
+                "crossref": { "$ref": "fields.json#field.crossref" },
+                "editors": { "$ref": "fields.json#field.editors" },
+                "eid": { "$ref": "fields.json#field.eid" },
+                "howpublished": { "$ref": "fields.json#field.howpublished" },
+                "institution": { "$ref": "fields.json#field.institution" },
+                "issueNumber": { "$ref": "fields.json#field.issueNumber" },
+                "organization": { "$ref": "fields.json#field.organization" },
+                "pages": { "$ref": "fields.json#field.pages" },
+                "publisher": { "$ref": "fields.json#field.publisher" },
+                "series": { "$ref": "fields.json#field.series" },
+                "volume": { "$ref": "fields.json#field.volume" }
+            },
+            "required": ["authors", "title", "journal", "year", "webIdentifier"],
+            "anyOf": [
+                { "required": ["pages"] }, { "required": ["eid"] }
+            ],
+            "unevaluatedProperties": false
+        },
+        "@booklet": {
+            "$anchor": "booklet", "title": "@BOOKLET sub-schema",
+            "type": "object", "allOf": [ { "$ref": "#base" } ],
+            "properties": {
+                "address": { "$ref": "fields.json#field.address" },
+                "authors": { "$ref": "fields.json#field.authors" },
+                "chapter": { "$ref": "fields.json#field.chapter" },
+                "edition": { "$ref": "fields.json#field.edition" },
+                "howpublished": { "$ref": "fields.json#field.howpublished" },
+                "pages": { "$ref": "fields.json#field.pages" },
+                "publisher": { "$ref": "fields.json#field.publisher" },
+                "organization": { "$ref": "fields.json#field.organization" },
+                "institution": { "$ref": "fields.json#field.institution" }
+            },
+            "required": ["title"],
+            "anyOf": [ { "required": ["webIdentifier"] }, { "required": ["publisher"] }, { "required": ["organization"] }, { "required": ["institution"] } ],
+            "unevaluatedProperties": false
+        },
+        "bookContainer": { 
+            "$anchor": "bookContainer", "title": "Abstract Base Book Model",
+            "type": "object", "allOf": [ { "$ref": "#base" } ],
+            "properties": {
+                "type": { "$ref": "fields.json#field.type" },
+                "address": { "$ref": "fields.json#field.address" },
+                "authors": { "$ref": "fields.json#field.authors" },
+                "crossref": { "$ref": "fields.json#field.crossref" },
+                "editors": { "$ref": "fields.json#field.editors" },
+                "edition": { "$ref": "fields.json#field.edition" },
+                "issueNumber": { "$ref": "fields.json#field.issueNumber" },
+                "publisher": { "$ref": "fields.json#field.publisher" },
+                "series": { "$ref": "fields.json#field.series" },
+                "volume": { "$ref": "fields.json#field.volume" }
+            },
+            "required": ["title", "publisher", "year"],
+            "anyOf": [ { "required": ["authors"] }, { "required": ["editors"] } ]
+        },
+        "@book": {
+            "$anchor": "book", "title": "@BOOK sub-schema",
+            "type": "object", "allOf": [ { "$ref": "#bookContainer" } ],
+            "unevaluatedProperties": false
+        },
+        "@inbook": {
+            "$anchor": "inbook", "title": "@INBOOK sub-schema",
+            "type": "object", "allOf": [ { "$ref": "#bookContainer" } ],
+            "properties": {
+                "collectionTitle": { "$ref": "fields.json#field.collectionTitle" },
+                "chapter": { "$ref": "fields.json#field.chapter" },
+                "pages": { "$ref": "fields.json#field.pages" }
+            },
+            "anyOf": [ {"required": ["chapter"] }, { "required": ["pages"] } ],
+            "unevaluatedProperties": false
+        },
+        "@incollection": {
+            "$anchor": "incollection", "title": "@INCOLLECTION sub-schema",
+            "type": "object", "allOf": [ { "$ref": "#base" } ],
+            "$comment": "@IMPORTANT: CFF ignored `series` and `type` for `@incollection`, but both fields are valid in BibTeX.",
+            "properties": {
+                "address": { "$ref": "fields.json#field.address" },
+                "authors": { "$ref": "fields.json#field.authors" },
+                "chapter": { "$ref": "fields.json#field.chapter" },
+                "collectionTitle": { "$ref": "fields.json#field.collectionTitle" },
+                "crossref": { "$ref": "fields.json#field.crossref" },
+                "edition": { "$ref": "fields.json#field.edition" },
+                "editors": { "$ref": "fields.json#field.editors" },
+                "issueNumber": { "$ref": "fields.json#field.issueNumber" },
+                "pages": { "$ref": "fields.json#field.pages" },
+                "publisher": { "$ref": "fields.json#field.publisher" },
+                "volume": { "$ref": "fields.json#field.volume" }
+            },
+            "required": ["authors", "chapter", "collectionTitle", "title", "publisher", "year"],
+            "additionalProperties": { "series": { "$ref": "fields.json#field.series" } },
+            "unevaluatedProperties": false 
+        },
+        "@inproceedings": {
+            "$anchor": "inproceedings", "title": "@INPROCEEDINGS sub-schema",
+            "type": "object", "allOf": [ { "$ref": "#base" } ],
+            "properties": {
+                "address": { "$ref": "fields.json#field.address" },
+                "authors": { "$ref": "fields.json#field.authors" },
+                "collectionTitle": { "$ref": "fields.json#field.collectionTitle" },
+                "crossref": { "$ref": "fields.json#field.crossref" },
+                "edition": { "$ref": "fields.json#field.edition" },
+                "editors": { "$ref": "fields.json#field.editors" },
+                "institution": { "$ref": "fields.json#field.institution" },
+                "issueNumber": { "$ref": "fields.json#field.issueNumber" },
+                "organization": { "$ref": "fields.json#field.organization" },
+                "pages": { "$ref": "fields.json#field.pages" },
+                "publisher": { "$ref": "fields.json#field.publisher" },
+                "type": { "$ref": "fields.json#field.type", "default": "Conference proceedings paper" },
+                "volume": { "$ref": "fields.json#field.volume" }
+            },
+            "required": ["authors", "collectionTitle", "title", "year"], 
+            "unevaluatedProperties": false
+        },
+        "@conference": {
+            "$anchor": "conference", "title": "@CONFERENCE sub-schema",
+            "type": "object", "allOf": [ { "$ref": "#base" } ],
+            "$comment": "Technically, '@conference' is a **Type-alias** for '@inproceedings' entry data model.",
+            "properties": {
+                "address": { "$ref": "fields.json#field.address", "description": "Physical location (city, country) of the conference or symposium." },
+                "authors": { "$ref": "fields.json#field.authors" },
+                "collectionTitle": { "$ref": "fields.json#field.collectionTitle", "$comment": "@FUTURE: consider changing the field name into `containerTitle`." },
+                "howpublished": { "$ref": "fields.json#enum.howpublished.conference" },
+                "organization": { "$ref": "fields.json#field.organization", "description": "Name of the hosting conference, symposium, or scholarly society." },
+                "type": { "$ref": "fields.json#field.type" }
+            },
+            "required": ["authors", "title", "year", "month", "organization", "howpublished"],
+            "unevaluatedProperties": false
+        },  
+        "@manual": {
+            "$anchor": "manual", "title": "@MANUAL sub-schema",
+            "type": "object", "allOf": [ { "$ref": "#base" } ],
+            "$comment": "Neither BibTex or CFF models accept `pages` for `@manual`, but it is a valid field in APA7 referencing format and grammar.",
+            "properties": {
+                "address": { "$ref": "fields.json#field.address" },
+                "authors": { "$ref": "fields.json#field.authors" },
+                "crossref": { "$ref": "fields.json#field.crossref" },
+                "edition": { "$ref": "fields.json#field.edition" },
+                "howpublished": { "$ref": "fields.json#enum.howpublished" },
+                "organization": { "$ref": "fields.json#field.organization" },
+                "pages": { "$ref": "fields.json#field.pages" },
+                "publisher": { "$ref": "fields.json#field.publisher" }
+            },
+            "required": ["title"], "unevaluatedProperties": false
+        },
+        "thesis": {
+            "$anchor": "thesis", "title": "Abstract Base Thesis model",
+            "type": "object", "allOf": [ { "$ref": "#base"} ],
+            "properties": {
+                "address": { "$ref": "fields.json#field.address" },
+                "authors": { "$ref": "fields.json#field.authors" },
+                "institution": { "$ref": "fields.json#field.institution" },
+                "school": { "$ref": "fields.json#field.school" }
+            },
+            "required": ["authors", "institution", "title", "year"],
+            "dependentRequired": { "school": ["institution"] }
+        },
+        "@mastersthesis": {
+            "$anchor": "thesis.masters", "title": "@MASTERSTHESIS sub-schema",
+            "type": "object", "allOf": [ { "$ref": "#thesis" } ],
+            "$comment": "Includes the `type` field to support CFF `thesis-type` and BibLaTeX degree descriptors (e.g., 'Master's thesis', 'MSc Report').",
+            "properties": {
+                "type": { 
+                    "$ref": "fields.json#field.type", "default": "Master's thesis",
+                    "description": "Specifies the exact degree or thesis type. Essential for mapping to CFF 'thesis-type' or CSL 'genre'."
+                }
+            },
+            "required": ["type"], "unevaluatedProperties": false
+        },
+        "@phdthesis": {
+            "$anchor": "thesis.phd", "title": "@PHDTHESIS sub-schema",
+            "type": "object", "allOf": [ { "$ref": "#thesis" } ],
+            "properties": {
+                "type": { 
+                    "$ref": "fields.json#field.type",
+                    "default": "PhD thesis",
+                    "description": "Specifies the exact doctoral degree or dissertation type (e.g., 'PhD thesis', 'Doctoral dissertation'). Essential for CFF 'thesis-type' mapping."
+                }
+            },
+            "required": ["type"], "unevaluatedProperties": false
+        },
+        "@misc": {
+            "$anchor": "misc", "title": "@MISC sub-schema",
+            "description": "`@MISC` entries' data model: A fallback type requiring at least a title or author.",
+            "type": "object", "allOf": [ { "$ref": "#base" } ],
+            "properties": {
+                "authors": { "$ref": "fields.json#field.authors" },
+                "crossref": { "$ref": "fields.json#field.crossref" },
+                "howpublished": { "$ref": "fields.json#enum.howpublished" },
+                "type": { "$ref": "fields.json#field.type" }
+            },
+            "anyOf": [ { "required": ["title"] }, { "required": ["authors"] } ],
+            "unevaluatedProperties": false
+        },
+        "@techreport": {
+            "$anchor": "techreport", "title": "@TECHREPORT sub-schema",
+            "type": "object", "allOf": [ { "$ref": "#base" } ],
+            "properties": {
+                "address": { "$ref": "fields.json#field.address" },
+                "authors": { "$ref": "fields.json#field.authors" },
+                "crossref": { "$ref": "fields.json#field.crossref" },
+                "howpublished": { "$ref": "fields.json#enum.howpublished" },
+                "institution": { "$ref": "fields.json#field.institution" },
+                "organization": { "$ref": "fields.json#field.organization" },
+                "school": { "$ref": "fields.json#field.school" },
+                "issueNumber": { "$ref": "fields.json#field.issueNumber" },
+                "type": { 
+                    "$ref": "fields.json#field.type", "default": "Technical report",
+                    "description": "Clarifies the report genre or regulatory filing type (e.g., 'Technical report', 'IND Application', 'White paper')."
+                }
+            },
+            "required": ["authors", "title", "year"],
+            "anyOf": [ { "required": ["organization"] }, { "required": ["institution"] } ],
+            "dependentRequired": { "school": ["institution"] }, "unevaluatedProperties": false
+        },
+        "@proceedings": {
+            "$anchor": "proceedings", "title": "@PROCEEDINGS sub-schema",
+            "type": "object",
+            "description": "`@PROCEEDINGS` entries' data model.",
+            "allOf": [ { "$ref": "#base" } ],
+            "properties": {
+                "address": { "$ref": "fields.json#field.address" },
+                "crossref": { "$ref": "fields.json#field.crossref" },
+                "editors": { "$ref": "fields.json#field.editors" },
+                "issueNumber": { "$ref": "fields.json#field.issueNumber" },
+                "organization": { "$ref": "fields.json#field.organization" },
+                "publisher": { "$ref": "fields.json#field.publisher" },
+                "series": { "$ref": "fields.json#field.series" },
+                "type": { "$ref": "fields.json#field.type" },
+                "volume": { "$ref": "fields.json#field.volume" }
+            },
+            "required": ["title", "year"], "unevaluatedProperties": false
+        },
+        "@unpublished": {
+            "$anchor": "unpublished", "title": "@UNPUBLISHED sub-schema",
+            "type": "object",
+            "allOf": [ { "$ref": "#base" } ],
+            "properties": {
+                "authors": { "$ref": "fields.json#field.authors" },
+                "year": { "$ref": "fields.json#field.year" },
+                "altYear": { "$ref": "fields.json#field.altYear" },
+                "howpublished": { "$ref": "fields.json#enum.howpublished" },
+                "institution": { "$ref": "fields.json#field.institution" },
+                "type": { "$ref": "fields.json#field.type" }
+            },
+            "required": ["authors", "title", "note"],  "unevaluatedProperties": false
+        },
+        "@modernWork": {
+            "$anchor": "modernWork", "title": "Universal Modern Work Stub",
+            "description": "Temporary strict schema for digital/modern types awaiting formal subschema definition.",
+            "type": "object", "allOf": [ { "$ref": "#base" } ],
+            "properties": {
+                "authors": { "$ref": "fields.json#field.authors" },
+                "howpublished": { "$ref": "fields.json#enum.howpublished" },
+                "webIdentifier": { "$ref": "fields.json#field.webIdentifier" }
+            },
+            "required": ["title", "webIdentifier"],
+            "unevaluatedProperties": false
+        }
+    }
+}

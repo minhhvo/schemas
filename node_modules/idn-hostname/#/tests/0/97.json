@@ -1,0 +1,6 @@
+{
+    "description": "A-label that decodes to a Bidi rule violation is invalid",
+    "comment": "https://www.rfc-editor.org/rfc/rfc5890#section-2.3.2.1 https://www.rfc-editor.org/rfc/rfc5893",
+    "data": "xn--0ca24w",
+    "valid": false
+}

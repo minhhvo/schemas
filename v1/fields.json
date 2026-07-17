@@ -1,0 +1,372 @@
+{
+    "$id": "https://minhhvo.github.io/schemas/v1/fields.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title":"BibTeX Field Definitions & Primitives Vocabulary",
+    "$defs": {
+        "F_key": {
+            "$anchor":"field.key",
+            "type": "string",
+            "description": "Used for alphabetizing, cross-referencing, and creating a label when the “author” information is missing. This field SHOULD not be confused with the key that appears at the beginning of the database entry."
+        },
+        "F_type": {
+            "$anchor":"field.type",
+            "type": "string",
+            "description": "a string that describes the type of media/creative work being referenced, such as 'article', 'book', 'inproceedings', etc."
+        },
+        "F_annote": {
+            "$anchor":"field.annote",
+            "type": "string",
+            "description": "It is not used by the standard bibliography styles, but may be used by others that produce an annotated bibliography."
+        },
+        "F_authors": {
+            "$anchor":"field.authors",
+            "type": "array",
+            "description": "An ordered list of author(s) accredited with authorships of the creative work.",
+            "items": { "$ref": "#/$defs/author" }
+        },
+        "F_title": {
+            "$anchor":"field.title",
+            "type": "string",
+            "description": "The title of the work (also known as the database entry) to be included in the bibliography."
+        },
+        "F_collectionTitle": {
+            "$anchor":"field.collectionTitle",
+            "type": "string",
+            "description": "The title of a collection of published works, such as a book (`@BOOK`) or a periodical journal issues (`@ARTICLE`)."
+        },
+        "F_chapter": {
+            "$anchor":"field.chapter",
+            "type": ["string", "integer"],
+            "description": "The chapter number of the work, if applicable."
+        },
+        "F_crossref"  : {
+            "$anchor":"field.crossref",
+            "type": "string",
+            "description": "The database key of the entry being cross-referenced."
+        },
+        "F_journal": {
+            "$anchor":"field.journal",
+            "type": "string",
+            "description": "The name of the journal in which the work was published.",
+            "$comment": "FUTURE: Consider (a) creating a pattern for discriminating between string that are abbreviated and full journal names, (b) a small (self-hosted) database of journal names and their abbreviations, and (c) a subschema for journal name validation."
+        },
+        "F_year": {
+            "$anchor":"field.year",
+            "anyOf": [
+                {
+                    "type": "string",
+                    "pattern": "^([1-9]\\d{2,3}(-[1-9]\\d{2,3})?|[Nn]\\.[Dd]\\.)$",
+                    "description": "Publication year as a 3-4 digit string, a range, or 'n.d.' (no date).",
+                    "examples": [ "113", "100-150", "2026", "1670-2020", "n.d." ]
+                },
+                {   
+                    "type": ["integer", "null"],
+                    "description": "Discrete 3-4 digit integer representation or null for unmapped API data.",
+                    "minimum": 100, "maximum": 9999 
+                }
+            ],
+            "description": "Year of Publication or, for an unpublished work (see also: '#field.altYear'), the year it was written / submitted.",
+            "$comment": "Recommend type-casting to <type: string> (this applies to **all** fields), if we follow the normative reference from standard BibTeX model, but acceptable to use integer type for interoperability with external Web APIs."
+        },
+        "F_altYear": {
+            "$anchor": "field.altYear",
+            "anyOf": [
+                { "$ref": "#field.year" },
+                { "type": "string", "pattern": "^[Ii]n [Pp]ress$", "description": "Allows the APA7 mandatory 'in press' (or 'In press') designator for accepted but unpublished manuscripts." }
+            ]
+        },
+        "F_volume": {
+            "$anchor":"field.volume",
+            "anyOf": [
+                { "type": "integer", "minimum": 1 },
+                { "type": "string", "pattern": "^[1-9](\\d*)?$" }
+            ],
+            "description": "The volume of the journal in which the work was published.",
+            "$comment": "Accept two primitive types with constraints. For <type: integer>, the value must be larger or equal to one (1). For <type: string>, the first character MUST be a non-zero digit, with an optional substring composed of zero or more trailing digits."
+        },
+        "F_issueNumber": {
+            "$anchor":"field.issueNumber",
+            "type": ["string", "integer"],
+            "description": "The issue number of the journal in which the work was published."
+        },
+        "F_pages": {
+            "$anchor":"field.pages",
+            "anyOf": [
+                {   "type": "integer", "exclusiveMinimum": 0  },
+                {
+                    "description": "String format that requires at least one numerical digit from 1-9 with up to four (4) optional tailing digits while also allows the option of having a second, identical numerical substring separated by en-dash '-'.",
+                    "type": "string", "pattern": "^([1-9]\\d{0,4})(-[1-9]\\d{0,4})?$"
+                },
+                {
+                    "description": "Tuple validation for page ranges",
+                    "type": "array",
+                    "prefixItems": [
+                        { "type": "integer" },
+                        { "type": "string", "const": "-" },
+                        { "type": "integer" }
+                    ],
+                    "examples": [ 
+                        { "example_1": ["9"] }, 
+                        { "example_2": ["10", "-", "22"] } 
+                    ],
+                    "items": false,
+                    "uniqueItems": true,
+                    "minItems": 1, "maxItems": 3, 
+                    "$comment": "@Technical_note: forcing the second item (`Array[1]`) to be ['U+002d']('-'), i.e.: an hyphen, so that tuple flattening (output a plain string) is cheap and efficient."
+                }
+            ],
+            "description": "The page number(s) of the work."
+        },
+        "F_eid": {
+            "$anchor":"field.eid",
+            "type": "string",
+            "description": "Electronic article identifier (eid) used in place of pages for online-only journals"
+        },
+        "F_month": {
+            "$anchor":"field.month",
+            "description": "The month of publication or, for an unpublished work, the month of it was written / submitted.",
+            "anyOf": [
+                {   "$ref": "#enum.months"  },
+                { 
+                    "type": "integer", "exclusiveMinimum": 0, "exclusiveMaximum": 11,
+                    "description": "Discrete numeric month representation (1 = January, 12 = December)."
+                }
+            ]
+        },
+        "F_publisher": {
+            "$anchor":"field.publisher",
+            "type": "string",
+            "description": "The name of the publisher."
+        },
+        "F_address": {
+            "$anchor":"field.address",
+            "type": "string",
+            "description": "Usually the address of the publisher or other type of institution.",
+            "$comment": "FUTURE: Use tuple validation and create a schema (via abstraction) for address to optimize validation and data transfers across different APIs."
+        },
+        "F_edition": {
+            "$anchor":"field.edition",
+            "type": ["string", "integer"],
+            "description": "The edition of the work."
+        },
+        "F_editors": {
+            "$anchor":"field.editors",
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "The editor(s) of the work.",
+            "$comment": "This is an array of the editor(s) of the work. @FUTURE - Consider changing this to an array of author while allowing for a single string representation of the editor(s) to account for pseudonyms and mononyms of anonymous, journal-appointed editors."
+        },
+        "F_series": {
+            "$anchor":"field.series",
+            "type": "string",
+            "description": "The series to which the work belongs."
+        },
+        "F_howpublished": {
+            "$anchor":"field.howpublished",
+            "type": "string",
+            "description": "How the work was published? / The medium where the work was published (e.g., 'Online', 'In press').",
+            "$comment":"FUTURE: Referencing the APA7 acceptable mediums for publications or cited works, and create a subschema (enumerated) to replace `type: string`.",
+            "default": "Online"
+        },
+        "F_institution": {
+            "$anchor":"field.institution",
+            "type": "string",
+            "description": "The institution where the work was published."
+        },
+        "F_organization": {
+            "$anchor":"field.organization",
+            "type": "string",
+            "description": "The organization associated with the work, namingly theses."
+        },
+        "F_school": {
+            "$anchor":"field.school",
+            "type": "string",
+            "description": "The school where the work was published."
+        },
+        "F_note":{
+            "$anchor":"field.note",
+            "type": "string",
+            "description": "Additional notes (from the bibliographic database owner/users) about the work."
+        },
+        "F_webIdentifier": {
+            "$anchor":"field.webIdentifier",
+            "anyOf": [{"$ref": "#/$defs/doi"}, {"$ref": "#/$defs/url"}],
+            "description": "A web-based identifier for the work, such as a DOI or URL."
+        },
+
+        "author": {
+            "type": "object",
+            "description": "Represents either an individual person or a corporate entity.",
+            "oneOf": [
+                {
+                    "title": "Corporate Author",
+                    "properties": {
+                        "corporateName": {
+                            "type": "string"
+                        },
+                        "corporateAcronym": {
+                            "type": "string"
+                        }
+                    },
+                    "required": ["corporateName"]
+                    
+                },
+                {
+                    "title": "Individual Author",
+                    "properties": {
+                        "firstName": { "type": "string", "minLength": 2, "maxLength": 128 },
+                        "middleName": { "type": "string", "minLength": 1, "maxLength": 128 },
+                        "lastName": { "type": "string",  "minLength": 2, "maxLength": 128 },
+                        "honorifics": {
+                            "enum": ["Dr.", "Prof.", "A/Prof.", "Ph.D.", "Mr.", "Mrs.", "Ms."],
+                            "$comment": "Unnecessary but leave as is for now"
+                        }
+                    },
+                    "required": ["firstName", "lastName"]    
+              }
+            ]
+        },
+        "pages": {
+            "description": "Tuple validation for page ranges",
+            "deprecated": true, "$comment":"see #field.pages",
+            "type": "array",
+            "prefixItems": [
+                { "type": "integer" },
+                { "type": "string", "const": "-" },
+                { "type": "integer" }
+            ],
+            "examples": [ 
+                { "example_A": ["9"] }, 
+                { "example_B": ["10", "-", "22"] } 
+            ],
+            "additionalProperties": false,
+            "minItems": 1, "maxItems": 3
+        },
+
+        "enum.months": {
+            "$anchor": "enum.months",
+            "anyOf": [
+                {  
+                    "$anchor": "enum.months.full",  "title": "Full Month Names",
+                    "type": "string",   "enum": [
+                        "January", "February", "March", "April", "May", "June",
+                        "July", "August", "September", "October", "November", "December"
+                    ]
+                },  {   
+                    "$anchor": "enum.months.lowercase", "title": "Lowercase BibTeX Macros",
+                    "type": "string",   "enum": [
+                        "jan", "feb", "mar", "apr", "may", "jun",
+                        "jul", "aug", "sep", "oct", "nov", "dec"
+                    ]       
+                },  { 
+                    "$anchor": "enum.months.titlecase",  "title": "Title-Case Abbreviations",
+                    "type": "string",           "enum": [
+                        "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                        "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" 
+                    ]
+                }
+            ]
+        },
+        "enum.howpublished": {
+            "$anchor": "enum.howpublished",
+            "title": "Master Medium & Modality Descriptors",
+            "description": "Polymorphic controlled vocabulary defining APA-7 and CFF format descriptors.",
+            "anyOf": [
+                {
+                    "$anchor": "enum.howpublished.conference", "title": "Type of Contribution in '@conference' entries",
+                    "description": "Controlled taxonomy defining the presentation medium or contribution modality for APA7 & CFF compliance.",
+                    "type": "string",
+                    "enum": [
+                        "Paper presentation", "Poster presentation", "Symposium contribution",
+                        "Keynote address", "Plenary address", "Invited address",
+                        "Workshop presentation", "Panel discussion", "Conference session",
+                        "Technical demonstration", "Webinar presentation"
+                    ]
+                },
+                { 
+                    "$anchor": "enum.howpublished.computational", "title": "Computational & Data Artifacts",
+                    "type": "string",
+                    "enum": [
+                        "Source code", "Data set", "R package",
+                        "Excel spreadsheet", "Computer software", "Mobile app",
+                        "Interactive visualization", "Large language model", "Jupyter notebook"
+                    ]       
+                },
+                { 
+                    "$anchor": "enum.howpublished.greylit", "title": "Grey Literature & Institutional Outputs",
+                    "type": "string",
+                    "enum": [
+                        "White paper", "Working paper", "Preprint", "Press release", 
+                        "Clinical practice guideline", "Technical specification",  "Policy brief",
+                        "Investigational New Drug application", "New Drug Application", 
+                        "Abbreviated New Drug Application", "Biologic License Application"
+                    ]    
+                },
+                {
+                    "$anchor": "enum.howpublished.multimedia", "title": "Audiovisual & Digital Multimedia",
+                    "type": "string",
+                    "enum": [
+                        "PowerPoint slides", "Video", "Infographic",
+                        "Map", "Photograph", "Word document", "Slide deck", 
+                        "Live stream", "Audio podcast"
+                    ]
+                },
+                {
+                    "$anchor": "enum.howpublished.educational", "title": "Pedagogical & Instructional Media",
+                    "description": "Format descriptors for teaching artifacts.",
+                    "type": "string",
+                    "enum": [
+                        "Lecture notes", "Laboratory manual",
+                        "Lecture slides",  "Presentation slides",
+                        "Course pack", "Syllabus", "Webinar", "Tutorial"
+                    ]
+                },
+                {
+                    "$anchor": "enum.howpublished.healthscience",
+                    "title": "Clinical & Pharmaceutical Reference Descriptors",
+                    "type": "string",
+                    "description": "Controlled format descriptors for point-of-care medical databases, drug formularies, and clinical decision-support tools (e.g., AMH, MIMS, UpToDate, eTG).",
+                    "enum": [
+                        "Drug monograph", "Product information", "Package insert",
+                        "Drug approval letter", "Clinical overview",
+                        "Evidence summary", "Patient education monograph"
+                    ]
+                },
+                {
+                    "$anchor": "enum.howpublished.legacy", "title": "Legacy & General Carrier Descriptors",
+                    "type": "string",
+                    "description": "Catch-all carrier formats and legacy descriptors to ensure backward compatibility with older BibTeX records and rigid style guides.",
+                    "enum": [
+                        "Online", "Website", "PDF",
+                        "Electronic", "Internet", 
+                        "CD-ROM", "DVD", "E-book", "Microfiche"
+                    ]
+                }
+            ]
+        },
+
+        "doi": {
+            "type": "string",
+            "pattern": "^(?:https?://(?:dx\\.)?doi\\.org\\/|info:doi\\/|(?i:d\\.?o\\.?i\\.?\\s*:\\s*))?(10\\.\\d{4,9}\\/[-._;()/:a-zA-Z0-9]+)$",
+            "description": "DOI (Digital Object Identifier) string format and pattern validation"
+        },
+        "url": {
+            "type": "string",
+            "pattern": "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$",
+            "description": "URL string format and pattern validation"
+        },
+        "standardCiteKey": {
+            "type": "array",
+            "description": "The Standard String Format of a citeKey - i.e., t-string as an algorithm.",
+            "$comment":"standard pattern = 'last name of the first author' + 'year'; note that curretly, 'authors'<type: array> == [ {'author'}, ...].\n\nWe do not have a field the capacity-(?) to retrieve only the first object of an array from the data payload for evaluation at data validation time.",
+            "dependentRequired": { },
+            "prefixItems":  [
+                { "type": "string", "$ref": "#/$defs/F_authors" },
+                { "type": ["string", "integer"], "$ref": "#/$defs/F_year" }
+            ] 
+
+        }
+    }
+}

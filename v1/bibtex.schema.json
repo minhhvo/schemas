@@ -1,0 +1,122 @@
+{
+    "$id": "https://minhhvo.github.io/schemas/v1/bibtex.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+    "title": "Modified BibTex Entry Data Transfer Object (DTO) Schema",
+    "description": "Representation of all BibTex entry types",
+    
+    "type": "object",
+    "required": ["class", "citeKey", "fields"],
+    "additionalProperties": false,
+    "properties": {
+        "citeKey":{
+            "type": "string",
+            "description": "The primary key (metakey) within a bibliography being used to uniquely identify a citation entry.",
+            "anyOf": [
+                { "title": "Author-Year format", "pattern": "^[a-zA-Z]+[0-9]{4}[a-z]?$" },
+                { "title": "Interoperable Database Key format", "pattern": "^[a-zA-Z0-9._\\-:]+$" }
+            ]
+        },
+        "class": {
+            "$ref": "#class", "type": "string",
+            "description": "The type of creative work being included in the bibliography. This is a required field, and must be one of the BibTex entry types."
+        },
+        "fields": { 
+            "type": "object", 
+            "description": "The payload container for BibTeX domain data. The specific allowed fields, required properties, and data types are dynamically delegated based on the evaluated entry class.",
+            "minProperties": 1
+        }
+    },
+
+    "allOf": [
+        {
+            "if": { "properties": { "class": { "const": "article" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#article" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "book" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#book" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "booklet" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#booklet" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "inbook" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#inbook" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "incollection" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#incollection" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "inproceedings" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#inproceedings" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "conference" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#conference" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "manual" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#manual" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "mastersthesis" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#thesis.masters" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "phdthesis" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#thesis.phd" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "misc" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#misc" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "proceedings" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#proceedings" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "techreport" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#techreport" } } }
+        },
+        {
+            "if": { "properties": { "class": { "const": "unpublished" } } },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#unpublished" } } }
+        },
+        {
+            "if": { 
+                "$anchor": "modernWorkType",
+                "properties": { 
+                    "class": { 
+                        "enum": [
+                            "data-set", "database", "software", 
+                            "online", "video", "website", "blog", 
+                            "personal-communication", "patent"
+                        ] 
+                    } 
+                } 
+            },
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#modernWork" } } }
+        }
+    ],
+
+    "$defs": {
+        "entryType": {
+            "$anchor": "class", "type": "string",
+            "$comment": "A combination of BibTeX entries and 'unmapped, equivalent' CFF keys.",
+            "enum": [ 
+                "article", "book", "booklet",
+                "inproceedings", "conference",
+                "inbook", "incollection", "manual",
+                "mastersthesis", "phdthesis", "misc",
+                "proceedings", "techreport", "unpublished",
+                "data-set", "database", "software",
+                "online", "video", "website", "blog",
+                "personal-communication", "patent"
+            ]
+        }
+    }
+
+}
