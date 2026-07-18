@@ -98,7 +98,7 @@
                     } 
                 } 
             },
-            "then": { "properties": { "fields": { "$ref": "entry-models.json#modernWork" } } }
+            "then": { "properties": { "fields": { "$ref": "entry-models.json#modernType" } } }
         }
     ],
 

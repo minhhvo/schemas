@@ -271,10 +271,12 @@
                 "institution": { "$ref": "fields.json#field.institution" },
                 "type": { "$ref": "fields.json#field.type" }
             },
-            "required": ["authors", "title", "note"],  "unevaluatedProperties": false
+            "required": ["authors", "title", "note"],  
+            "anyOf": [ { "required": ["year"] }, { "required": ["altYear"] } ],
+            "unevaluatedProperties": false
         },
-        "@modernWork": {
-            "$anchor": "modernWork", "title": "Universal Modern Work Stub",
+        "@modernType": {
+            "$anchor": "modernType", "title": "Universal Modern Type Stub",
             "description": "Temporary strict schema for digital/modern types awaiting formal subschema definition.",
             "type": "object", "allOf": [ { "$ref": "#base" } ],
             "properties": {
