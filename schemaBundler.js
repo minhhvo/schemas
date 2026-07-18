@@ -1,11 +1,10 @@
-require("dotenv").config();
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import $RefParser from '@apidevtools/json-schema-ref-parser';
 
-const $RefParser = require("@apidevtools/json-schema-ref-parser");
-const fs = require("fs");
-const path = require("path");
+import { env } from 'node:process';
 
-// 1. Standardized variable casing and removed unused PROD_BASE_URI
-const BASE_URI = (process.env.REPO_BASE_URI || "").replace(/\/$/, "");
+const BASE_URI = (env.REPO_BASE_URI || "").replace(/\/$/, "");
 
 if (!BASE_URI) {
     console.warn("WARNING: env.vars `REPO_BASE_URI` is not defined. Falling back to relative `$id`.");
