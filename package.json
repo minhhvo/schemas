@@ -20,6 +20,7 @@
   "homepage": "https://github.com/minhhvo/schemas#readme",
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^15.5.0",
-    "@hyperjump/json-schema": "^1.17.7"
+    "@hyperjump/json-schema": "^1.17.7",
+    "dotenv": "^17.4.2"
   }
 }

@@ -4,6 +4,7 @@
     
     "title": "Modified BibTex Entry Data Transfer Object (DTO) Schema",
     "description": "Representation of all BibTex entry types",
+    "deprecated": true,
     
     "type": "object",
     "required": ["class", "citeKey", "fields"],
