@@ -1,5 +1,5 @@
 {
-    "$id": "./v1/fields.json",
+    "$id": "./fields.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title":"BibTeX Field Definitions & Primitives Vocabulary",
     "$defs": {

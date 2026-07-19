@@ -1,5 +1,5 @@
 {
-    "$id": "./v1/bibtex.schema.json",
+    "$id": "./bibtex.schema.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
 
     "title": "Modified BibTex Entry Data Transfer Object (DTO) Schema",
