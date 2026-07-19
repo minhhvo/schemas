@@ -1,0 +1,1573 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Modified BibTex Entry Data Transfer Object (DTO) Schema",
+    "type": "object",
+    "required": [
+        "class",
+        "citeKey",
+        "fields"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "citeKey": {
+            "type": "string",
+            "anyOf": [
+                {
+                    "title": "Author-Year format",
+                    "pattern": "^[a-zA-Z]+[0-9]{4}[a-z]?$"
+                },
+                {
+                    "title": "Interoperable Database Key format",
+                    "pattern": "^[a-zA-Z0-9._\\-:]+$"
+                }
+            ]
+        },
+        "class": {
+            "$ref": "#class",
+            "type": "string"
+        },
+        "fields": {
+            "type": "object",
+            "minProperties": 1
+        }
+    },
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "article"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#article"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "book"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#book"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "booklet"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#booklet"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "inbook"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#inbook"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "incollection"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#incollection"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "inproceedings"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#inproceedings"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "conference"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#conference"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "manual"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#manual"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "mastersthesis"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#thesis.masters"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "phdthesis"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#thesis.phd"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "misc"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#misc"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "proceedings"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#proceedings"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "techreport"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#techreport"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "const": "unpublished"
+                    }
+                }
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#unpublished"
+                    }
+                }
+            }
+        },
+        {
+            "if": {
+                "properties": {
+                    "class": {
+                        "enum": [
+                            "data-set",
+                            "database",
+                            "software",
+                            "online",
+                            "video",
+                            "website",
+                            "blog",
+                            "personal-communication",
+                            "patent"
+                        ]
+                    }
+                },
+                "$anchor": "modernWorkType"
+            },
+            "then": {
+                "properties": {
+                    "fields": {
+                        "$ref": "entry-models.json#modernType"
+                    }
+                }
+            }
+        }
+    ],
+    "$defs": {
+        "entryType": {
+            "type": "string",
+            "enum": [
+                "article",
+                "book",
+                "booklet",
+                "inproceedings",
+                "conference",
+                "inbook",
+                "incollection",
+                "manual",
+                "mastersthesis",
+                "phdthesis",
+                "misc",
+                "proceedings",
+                "techreport",
+                "unpublished",
+                "data-set",
+                "database",
+                "software",
+                "online",
+                "video",
+                "website",
+                "blog",
+                "personal-communication",
+                "patent"
+            ],
+            "$anchor": "class"
+        },
+        "entry-models.json": {
+            "$id": "entry-models.json",
+            "title": "Schema for 14 of Standard BibTeX Entry Models",
+            "type": "object",
+            "$defs": {
+                "baseModel": {
+                    "type": "object",
+                    "properties": {
+                        "title": {
+                            "$ref": "fields.json#field.title"
+                        },
+                        "year": {
+                            "$ref": "fields.json#field.year"
+                        },
+                        "month": {
+                            "$ref": "fields.json#field.month"
+                        },
+                        "key": {
+                            "$ref": "fields.json#field.key"
+                        },
+                        "note": {
+                            "$ref": "fields.json#field.note"
+                        },
+                        "annote": {
+                            "$ref": "fields.json#field.annote"
+                        },
+                        "webIdentifier": {
+                            "$ref": "fields.json#field.webIdentifier"
+                        }
+                    },
+                    "$anchor": "base"
+                },
+                "@article": {
+                    "title": "@ARTICLE sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "authors": {
+                            "$ref": "fields.json#field.authors"
+                        },
+                        "journal": {
+                            "$ref": "fields.json#field.journal"
+                        },
+                        "type": {
+                            "$ref": "fields.json#field.type"
+                        },
+                        "chapter": {
+                            "$ref": "fields.json#field.chapter"
+                        },
+                        "collectionTitle": {
+                            "$ref": "fields.json#field.collectionTitle"
+                        },
+                        "crossref": {
+                            "$ref": "fields.json#field.crossref"
+                        },
+                        "editors": {
+                            "$ref": "fields.json#field.editors"
+                        },
+                        "eid": {
+                            "$ref": "fields.json#field.eid"
+                        },
+                        "howpublished": {
+                            "$ref": "fields.json#field.howpublished"
+                        },
+                        "institution": {
+                            "$ref": "fields.json#field.institution"
+                        },
+                        "issueNumber": {
+                            "$ref": "fields.json#field.issueNumber"
+                        },
+                        "organization": {
+                            "$ref": "fields.json#field.organization"
+                        },
+                        "pages": {
+                            "$ref": "fields.json#field.pages"
+                        },
+                        "publisher": {
+                            "$ref": "fields.json#field.publisher"
+                        },
+                        "series": {
+                            "$ref": "fields.json#field.series"
+                        },
+                        "volume": {
+                            "$ref": "fields.json#field.volume"
+                        }
+                    },
+                    "required": [
+                        "authors",
+                        "title",
+                        "journal",
+                        "year",
+                        "webIdentifier"
+                    ],
+                    "anyOf": [
+                        {
+                            "required": [
+                                "pages"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "eid"
+                            ]
+                        }
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "article"
+                },
+                "@booklet": {
+                    "title": "@BOOKLET sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "address": {
+                            "$ref": "fields.json#field.address"
+                        },
+                        "authors": {
+                            "$ref": "fields.json#field.authors"
+                        },
+                        "chapter": {
+                            "$ref": "fields.json#field.chapter"
+                        },
+                        "edition": {
+                            "$ref": "fields.json#field.edition"
+                        },
+                        "howpublished": {
+                            "$ref": "fields.json#field.howpublished"
+                        },
+                        "pages": {
+                            "$ref": "fields.json#field.pages"
+                        },
+                        "publisher": {
+                            "$ref": "fields.json#field.publisher"
+                        },
+                        "organization": {
+                            "$ref": "fields.json#field.organization"
+                        },
+                        "institution": {
+                            "$ref": "fields.json#field.institution"
+                        }
+                    },
+                    "required": [
+                        "title"
+                    ],
+                    "anyOf": [
+                        {
+                            "required": [
+                                "webIdentifier"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "publisher"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "organization"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "institution"
+                            ]
+                        }
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "booklet"
+                },
+                "bookContainer": {
+                    "title": "Abstract Base Book Model",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "type": {
+                            "$ref": "fields.json#field.type"
+                        },
+                        "address": {
+                            "$ref": "fields.json#field.address"
+                        },
+                        "authors": {
+                            "$ref": "fields.json#field.authors"
+                        },
+                        "crossref": {
+                            "$ref": "fields.json#field.crossref"
+                        },
+                        "editors": {
+                            "$ref": "fields.json#field.editors"
+                        },
+                        "edition": {
+                            "$ref": "fields.json#field.edition"
+                        },
+                        "issueNumber": {
+                            "$ref": "fields.json#field.issueNumber"
+                        },
+                        "publisher": {
+                            "$ref": "fields.json#field.publisher"
+                        },
+                        "series": {
+                            "$ref": "fields.json#field.series"
+                        },
+                        "volume": {
+                            "$ref": "fields.json#field.volume"
+                        }
+                    },
+                    "required": [
+                        "title",
+                        "publisher",
+                        "year"
+                    ],
+                    "anyOf": [
+                        {
+                            "required": [
+                                "authors"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "editors"
+                            ]
+                        }
+                    ],
+                    "$anchor": "bookContainer"
+                },
+                "@book": {
+                    "title": "@BOOK sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#bookContainer"
+                        }
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "book"
+                },
+                "@inbook": {
+                    "title": "@INBOOK sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#bookContainer"
+                        }
+                    ],
+                    "properties": {
+                        "collectionTitle": {
+                            "$ref": "fields.json#field.collectionTitle"
+                        },
+                        "chapter": {
+                            "$ref": "fields.json#field.chapter"
+                        },
+                        "pages": {
+                            "$ref": "fields.json#field.pages"
+                        }
+                    },
+                    "anyOf": [
+                        {
+                            "required": [
+                                "chapter"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "pages"
+                            ]
+                        }
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "inbook"
+                },
+                "@incollection": {
+                    "title": "@INCOLLECTION sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "address": {
+                            "$ref": "fields.json#field.address"
+                        },
+                        "authors": {
+                            "$ref": "fields.json#field.authors"
+                        },
+                        "chapter": {
+                            "$ref": "fields.json#field.chapter"
+                        },
+                        "collectionTitle": {
+                            "$ref": "fields.json#field.collectionTitle"
+                        },
+                        "crossref": {
+                            "$ref": "fields.json#field.crossref"
+                        },
+                        "edition": {
+                            "$ref": "fields.json#field.edition"
+                        },
+                        "editors": {
+                            "$ref": "fields.json#field.editors"
+                        },
+                        "issueNumber": {
+                            "$ref": "fields.json#field.issueNumber"
+                        },
+                        "pages": {
+                            "$ref": "fields.json#field.pages"
+                        },
+                        "publisher": {
+                            "$ref": "fields.json#field.publisher"
+                        },
+                        "volume": {
+                            "$ref": "fields.json#field.volume"
+                        }
+                    },
+                    "required": [
+                        "authors",
+                        "chapter",
+                        "collectionTitle",
+                        "title",
+                        "publisher",
+                        "year"
+                    ],
+                    "additionalProperties": {
+                        "series": {
+                            "$ref": "fields.json#field.series"
+                        }
+                    },
+                    "unevaluatedProperties": false,
+                    "$anchor": "incollection"
+                },
+                "@inproceedings": {
+                    "title": "@INPROCEEDINGS sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "address": {
+                            "$ref": "fields.json#field.address"
+                        },
+                        "authors": {
+                            "$ref": "fields.json#field.authors"
+                        },
+                        "collectionTitle": {
+                            "$ref": "fields.json#field.collectionTitle"
+                        },
+                        "crossref": {
+                            "$ref": "fields.json#field.crossref"
+                        },
+                        "edition": {
+                            "$ref": "fields.json#field.edition"
+                        },
+                        "editors": {
+                            "$ref": "fields.json#field.editors"
+                        },
+                        "institution": {
+                            "$ref": "fields.json#field.institution"
+                        },
+                        "issueNumber": {
+                            "$ref": "fields.json#field.issueNumber"
+                        },
+                        "organization": {
+                            "$ref": "fields.json#field.organization"
+                        },
+                        "pages": {
+                            "$ref": "fields.json#field.pages"
+                        },
+                        "publisher": {
+                            "$ref": "fields.json#field.publisher"
+                        },
+                        "type": {
+                            "$ref": "fields.json#field.type",
+                            "default": "Conference proceedings paper"
+                        },
+                        "volume": {
+                            "$ref": "fields.json#field.volume"
+                        }
+                    },
+                    "required": [
+                        "authors",
+                        "collectionTitle",
+                        "title",
+                        "year"
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "inproceedings"
+                },
+                "@conference": {
+                    "title": "@CONFERENCE sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "address": {
+                            "$ref": "fields.json#field.address"
+                        },
+                        "authors": {
+                            "$ref": "fields.json#field.authors"
+                        },
+                        "collectionTitle": {
+                            "$ref": "fields.json#field.collectionTitle"
+                        },
+                        "howpublished": {
+                            "$ref": "fields.json#enum.howpublished.conference"
+                        },
+                        "organization": {
+                            "$ref": "fields.json#field.organization"
+                        },
+                        "type": {
+                            "$ref": "fields.json#field.type"
+                        }
+                    },
+                    "required": [
+                        "authors",
+                        "title",
+                        "year",
+                        "month",
+                        "organization",
+                        "howpublished"
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "conference"
+                },
+                "@manual": {
+                    "title": "@MANUAL sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "address": {
+                            "$ref": "fields.json#field.address"
+                        },
+                        "authors": {
+                            "$ref": "fields.json#field.authors"
+                        },
+                        "crossref": {
+                            "$ref": "fields.json#field.crossref"
+                        },
+                        "edition": {
+                            "$ref": "fields.json#field.edition"
+                        },
+                        "howpublished": {
+                            "$ref": "fields.json#enum.howpublished"
+                        },
+                        "organization": {
+                            "$ref": "fields.json#field.organization"
+                        },
+                        "pages": {
+                            "$ref": "fields.json#field.pages"
+                        },
+                        "publisher": {
+                            "$ref": "fields.json#field.publisher"
+                        }
+                    },
+                    "required": [
+                        "title"
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "manual"
+                },
+                "thesis": {
+                    "title": "Abstract Base Thesis model",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "address": {
+                            "$ref": "fields.json#field.address"
+                        },
+                        "authors": {
+                            "$ref": "fields.json#field.authors"
+                        },
+                        "institution": {
+                            "$ref": "fields.json#field.institution"
+                        },
+                        "school": {
+                            "$ref": "fields.json#field.school"
+                        }
+                    },
+                    "required": [
+                        "authors",
+                        "institution",
+                        "title",
+                        "year"
+                    ],
+                    "dependentRequired": {
+                        "school": [
+                            "institution"
+                        ]
+                    },
+                    "$anchor": "thesis"
+                },
+                "@mastersthesis": {
+                    "title": "@MASTERSTHESIS sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#thesis"
+                        }
+                    ],
+                    "properties": {
+                        "type": {
+                            "$ref": "fields.json#field.type",
+                            "default": "Master's thesis"
+                        }
+                    },
+                    "required": [
+                        "type"
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "thesis.masters"
+                },
+                "@phdthesis": {
+                    "title": "@PHDTHESIS sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#thesis"
+                        }
+                    ],
+                    "properties": {
+                        "type": {
+                            "$ref": "fields.json#field.type",
+                            "default": "PhD thesis"
+                        }
+                    },
+                    "required": [
+                        "type"
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "thesis.phd"
+                },
+                "@misc": {
+                    "title": "@MISC sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "authors": {
+                            "$ref": "fields.json#field.authors"
+                        },
+                        "crossref": {
+                            "$ref": "fields.json#field.crossref"
+                        },
+                        "howpublished": {
+                            "$ref": "fields.json#enum.howpublished"
+                        },
+                        "type": {
+                            "$ref": "fields.json#field.type"
+                        }
+                    },
+                    "anyOf": [
+                        {
+                            "required": [
+                                "title"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "authors"
+                            ]
+                        }
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "misc"
+                },
+                "@techreport": {
+                    "title": "@TECHREPORT sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "address": {
+                            "$ref": "fields.json#field.address"
+                        },
+                        "authors": {
+                            "$ref": "fields.json#field.authors"
+                        },
+                        "crossref": {
+                            "$ref": "fields.json#field.crossref"
+                        },
+                        "howpublished": {
+                            "$ref": "fields.json#enum.howpublished"
+                        },
+                        "institution": {
+                            "$ref": "fields.json#field.institution"
+                        },
+                        "organization": {
+                            "$ref": "fields.json#field.organization"
+                        },
+                        "school": {
+                            "$ref": "fields.json#field.school"
+                        },
+                        "issueNumber": {
+                            "$ref": "fields.json#field.issueNumber"
+                        },
+                        "type": {
+                            "$ref": "fields.json#field.type",
+                            "default": "Technical report"
+                        }
+                    },
+                    "required": [
+                        "authors",
+                        "title",
+                        "year"
+                    ],
+                    "anyOf": [
+                        {
+                            "required": [
+                                "organization"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "institution"
+                            ]
+                        }
+                    ],
+                    "dependentRequired": {
+                        "school": [
+                            "institution"
+                        ]
+                    },
+                    "unevaluatedProperties": false,
+                    "$anchor": "techreport"
+                },
+                "@proceedings": {
+                    "title": "@PROCEEDINGS sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "address": {
+                            "$ref": "fields.json#field.address"
+                        },
+                        "crossref": {
+                            "$ref": "fields.json#field.crossref"
+                        },
+                        "editors": {
+                            "$ref": "fields.json#field.editors"
+                        },
+                        "issueNumber": {
+                            "$ref": "fields.json#field.issueNumber"
+                        },
+                        "organization": {
+                            "$ref": "fields.json#field.organization"
+                        },
+                        "publisher": {
+                            "$ref": "fields.json#field.publisher"
+                        },
+                        "series": {
+                            "$ref": "fields.json#field.series"
+                        },
+                        "type": {
+                            "$ref": "fields.json#field.type"
+                        },
+                        "volume": {
+                            "$ref": "fields.json#field.volume"
+                        }
+                    },
+                    "required": [
+                        "title",
+                        "year"
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "proceedings"
+                },
+                "@unpublished": {
+                    "title": "@UNPUBLISHED sub-schema",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "authors": {
+                            "$ref": "fields.json#field.authors"
+                        },
+                        "year": {
+                            "$ref": "fields.json#field.year"
+                        },
+                        "altYear": {
+                            "$ref": "fields.json#field.altYear"
+                        },
+                        "howpublished": {
+                            "$ref": "fields.json#enum.howpublished"
+                        },
+                        "institution": {
+                            "$ref": "fields.json#field.institution"
+                        },
+                        "type": {
+                            "$ref": "fields.json#field.type"
+                        }
+                    },
+                    "required": [
+                        "authors",
+                        "title",
+                        "note"
+                    ],
+                    "anyOf": [
+                        {
+                            "required": [
+                                "year"
+                            ]
+                        },
+                        {
+                            "required": [
+                                "altYear"
+                            ]
+                        }
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "unpublished"
+                },
+                "@modernType": {
+                    "title": "Universal Modern Type Stub",
+                    "type": "object",
+                    "allOf": [
+                        {
+                            "$ref": "#base"
+                        }
+                    ],
+                    "properties": {
+                        "authors": {
+                            "$ref": "fields.json#field.authors"
+                        },
+                        "howpublished": {
+                            "$ref": "fields.json#enum.howpublished"
+                        },
+                        "webIdentifier": {
+                            "$ref": "fields.json#field.webIdentifier"
+                        }
+                    },
+                    "required": [
+                        "title",
+                        "webIdentifier"
+                    ],
+                    "unevaluatedProperties": false,
+                    "$anchor": "modernType"
+                }
+            }
+        },
+        "fields.json": {
+            "$id": "fields.json",
+            "title": "BibTeX Field Definitions & Primitives Vocabulary",
+            "$defs": {
+                "F_key": {
+                    "type": "string",
+                    "$anchor": "field.key"
+                },
+                "F_type": {
+                    "type": "string",
+                    "$anchor": "field.type"
+                },
+                "F_annote": {
+                    "type": "string",
+                    "$anchor": "field.annote"
+                },
+                "F_authors": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/$defs/author"
+                    },
+                    "$anchor": "field.authors"
+                },
+                "F_title": {
+                    "type": "string",
+                    "$anchor": "field.title"
+                },
+                "F_collectionTitle": {
+                    "type": "string",
+                    "$anchor": "field.collectionTitle"
+                },
+                "F_chapter": {
+                    "type": [
+                        "string",
+                        "integer"
+                    ],
+                    "$anchor": "field.chapter"
+                },
+                "F_crossref": {
+                    "type": "string",
+                    "$anchor": "field.crossref"
+                },
+                "F_journal": {
+                    "type": "string",
+                    "$anchor": "field.journal"
+                },
+                "F_year": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "pattern": "^([1-9]\\d{2,3}(-[1-9]\\d{2,3})?|[Nn]\\.[Dd]\\.)$"
+                        },
+                        {
+                            "type": [
+                                "integer",
+                                "null"
+                            ],
+                            "minimum": 100,
+                            "maximum": 9999
+                        }
+                    ],
+                    "$anchor": "field.year"
+                },
+                "F_altYear": {
+                    "anyOf": [
+                        {
+                            "$ref": "#field.year"
+                        },
+                        {
+                            "type": "string",
+                            "pattern": "^[Ii]n [Pp]ress$"
+                        }
+                    ],
+                    "$anchor": "field.altYear"
+                },
+                "F_volume": {
+                    "anyOf": [
+                        {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        {
+                            "type": "string",
+                            "pattern": "^[1-9](\\d*)?$"
+                        }
+                    ],
+                    "$anchor": "field.volume"
+                },
+                "F_issueNumber": {
+                    "type": [
+                        "string",
+                        "integer"
+                    ],
+                    "$anchor": "field.issueNumber"
+                },
+                "F_pages": {
+                    "anyOf": [
+                        {
+                            "type": "integer",
+                            "exclusiveMinimum": 0
+                        },
+                        {
+                            "type": "string",
+                            "pattern": "^([1-9]\\d{0,4})(-[1-9]\\d{0,4})?$"
+                        },
+                        {
+                            "type": "array",
+                            "prefixItems": [
+                                {
+                                    "type": "integer"
+                                },
+                                {
+                                    "type": "string",
+                                    "const": "-"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ],
+                            "items": false,
+                            "uniqueItems": true,
+                            "minItems": 1,
+                            "maxItems": 3
+                        }
+                    ],
+                    "$anchor": "field.pages"
+                },
+                "F_eid": {
+                    "type": "string",
+                    "$anchor": "field.eid"
+                },
+                "F_month": {
+                    "anyOf": [
+                        {
+                            "$ref": "#enum.months"
+                        },
+                        {
+                            "type": "integer",
+                            "exclusiveMinimum": 0,
+                            "exclusiveMaximum": 11
+                        }
+                    ],
+                    "$anchor": "field.month"
+                },
+                "F_publisher": {
+                    "type": "string",
+                    "$anchor": "field.publisher"
+                },
+                "F_address": {
+                    "type": "string",
+                    "$anchor": "field.address"
+                },
+                "F_edition": {
+                    "type": [
+                        "string",
+                        "integer"
+                    ],
+                    "$anchor": "field.edition"
+                },
+                "F_editors": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "$anchor": "field.editors"
+                },
+                "F_series": {
+                    "type": "string",
+                    "$anchor": "field.series"
+                },
+                "F_howpublished": {
+                    "type": "string",
+                    "default": "Online",
+                    "$anchor": "field.howpublished"
+                },
+                "F_institution": {
+                    "type": "string",
+                    "$anchor": "field.institution"
+                },
+                "F_organization": {
+                    "type": "string",
+                    "$anchor": "field.organization"
+                },
+                "F_school": {
+                    "type": "string",
+                    "$anchor": "field.school"
+                },
+                "F_note": {
+                    "type": "string",
+                    "$anchor": "field.note"
+                },
+                "F_webIdentifier": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/doi"
+                        },
+                        {
+                            "$ref": "#/$defs/url"
+                        }
+                    ],
+                    "$anchor": "field.webIdentifier"
+                },
+                "author": {
+                    "type": "object",
+                    "oneOf": [
+                        {
+                            "title": "Corporate Author",
+                            "properties": {
+                                "corporateName": {
+                                    "type": "string"
+                                },
+                                "corporateAcronym": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "corporateName"
+                            ]
+                        },
+                        {
+                            "title": "Individual Author",
+                            "properties": {
+                                "firstName": {
+                                    "type": "string",
+                                    "minLength": 2,
+                                    "maxLength": 128
+                                },
+                                "middleName": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 128
+                                },
+                                "lastName": {
+                                    "type": "string",
+                                    "minLength": 2,
+                                    "maxLength": 128
+                                },
+                                "honorifics": {
+                                    "enum": [
+                                        "Dr.",
+                                        "Prof.",
+                                        "A/Prof.",
+                                        "Ph.D.",
+                                        "Mr.",
+                                        "Mrs.",
+                                        "Ms."
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "firstName",
+                                "lastName"
+                            ]
+                        }
+                    ]
+                },
+                "pages": {
+                    "type": "array",
+                    "prefixItems": [
+                        {
+                            "type": "integer"
+                        },
+                        {
+                            "type": "string",
+                            "const": "-"
+                        },
+                        {
+                            "type": "integer"
+                        }
+                    ],
+                    "additionalProperties": false,
+                    "minItems": 1,
+                    "maxItems": 3
+                },
+                "enum.months": {
+                    "anyOf": [
+                        {
+                            "title": "Full Month Names",
+                            "type": "string",
+                            "enum": [
+                                "January",
+                                "February",
+                                "March",
+                                "April",
+                                "May",
+                                "June",
+                                "July",
+                                "August",
+                                "September",
+                                "October",
+                                "November",
+                                "December"
+                            ],
+                            "$anchor": "enum.months.full"
+                        },
+                        {
+                            "title": "Lowercase BibTeX Macros",
+                            "type": "string",
+                            "enum": [
+                                "jan",
+                                "feb",
+                                "mar",
+                                "apr",
+                                "may",
+                                "jun",
+                                "jul",
+                                "aug",
+                                "sep",
+                                "oct",
+                                "nov",
+                                "dec"
+                            ],
+                            "$anchor": "enum.months.lowercase"
+                        },
+                        {
+                            "title": "Title-Case Abbreviations",
+                            "type": "string",
+                            "enum": [
+                                "Jan",
+                                "Feb",
+                                "Mar",
+                                "Apr",
+                                "May",
+                                "Jun",
+                                "Jul",
+                                "Aug",
+                                "Sep",
+                                "Oct",
+                                "Nov",
+                                "Dec"
+                            ],
+                            "$anchor": "enum.months.titlecase"
+                        }
+                    ],
+                    "$anchor": "enum.months"
+                },
+                "enum.howpublished": {
+                    "title": "Master Medium & Modality Descriptors",
+                    "anyOf": [
+                        {
+                            "title": "Type of Contribution in '@conference' entries",
+                            "type": "string",
+                            "enum": [
+                                "Paper presentation",
+                                "Poster presentation",
+                                "Symposium contribution",
+                                "Keynote address",
+                                "Plenary address",
+                                "Invited address",
+                                "Workshop presentation",
+                                "Panel discussion",
+                                "Conference session",
+                                "Technical demonstration",
+                                "Webinar presentation"
+                            ],
+                            "$anchor": "enum.howpublished.conference"
+                        },
+                        {
+                            "title": "Computational & Data Artifacts",
+                            "type": "string",
+                            "enum": [
+                                "Source code",
+                                "Data set",
+                                "R package",
+                                "Excel spreadsheet",
+                                "Computer software",
+                                "Mobile app",
+                                "Interactive visualization",
+                                "Large language model",
+                                "Jupyter notebook"
+                            ],
+                            "$anchor": "enum.howpublished.computational"
+                        },
+                        {
+                            "title": "Grey Literature & Institutional Outputs",
+                            "type": "string",
+                            "enum": [
+                                "White paper",
+                                "Working paper",
+                                "Preprint",
+                                "Press release",
+                                "Clinical practice guideline",
+                                "Technical specification",
+                                "Policy brief",
+                                "Investigational New Drug application",
+                                "New Drug Application",
+                                "Abbreviated New Drug Application",
+                                "Biologic License Application"
+                            ],
+                            "$anchor": "enum.howpublished.greylit"
+                        },
+                        {
+                            "title": "Audiovisual & Digital Multimedia",
+                            "type": "string",
+                            "enum": [
+                                "PowerPoint slides",
+                                "Video",
+                                "Infographic",
+                                "Map",
+                                "Photograph",
+                                "Word document",
+                                "Slide deck",
+                                "Live stream",
+                                "Audio podcast"
+                            ],
+                            "$anchor": "enum.howpublished.multimedia"
+                        },
+                        {
+                            "title": "Pedagogical & Instructional Media",
+                            "type": "string",
+                            "enum": [
+                                "Lecture notes",
+                                "Laboratory manual",
+                                "Lecture slides",
+                                "Presentation slides",
+                                "Course pack",
+                                "Syllabus",
+                                "Webinar",
+                                "Tutorial"
+                            ],
+                            "$anchor": "enum.howpublished.educational"
+                        },
+                        {
+                            "title": "Clinical & Pharmaceutical Reference Descriptors",
+                            "type": "string",
+                            "enum": [
+                                "Drug monograph",
+                                "Product information",
+                                "Package insert",
+                                "Drug approval letter",
+                                "Clinical overview",
+                                "Evidence summary",
+                                "Patient education monograph"
+                            ],
+                            "$anchor": "enum.howpublished.healthscience"
+                        },
+                        {
+                            "title": "Legacy & General Carrier Descriptors",
+                            "type": "string",
+                            "enum": [
+                                "Online",
+                                "Website",
+                                "PDF",
+                                "Electronic",
+                                "Internet",
+                                "CD-ROM",
+                                "DVD",
+                                "E-book",
+                                "Microfiche"
+                            ],
+                            "$anchor": "enum.howpublished.legacy"
+                        }
+                    ],
+                    "$anchor": "enum.howpublished"
+                },
+                "doi": {
+                    "type": "string",
+                    "pattern": "^(?:https?://(?:dx\\.)?doi\\.org\\/|info:doi\\/|(?i:d\\.?o\\.?i\\.?\\s*:\\s*))?(10\\.\\d{4,9}\\/[-._;()/:a-zA-Z0-9]+)$"
+                },
+                "url": {
+                    "type": "string",
+                    "pattern": "^(https?|ftp)://[^\\s/$.?#].[^\\s]*$"
+                },
+                "standardCiteKey": {
+                    "type": "array",
+                    "dependentRequired": {},
+                    "prefixItems": [
+                        {
+                            "type": "string",
+                            "$ref": "#/$defs/F_authors"
+                        },
+                        {
+                            "type": [
+                                "string",
+                                "integer"
+                            ],
+                            "$ref": "#/$defs/F_year"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+}
