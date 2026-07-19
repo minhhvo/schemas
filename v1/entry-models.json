@@ -1,5 +1,5 @@
 {
-    "$id": "https://github.com/minhhvo/schemas/v1/entry-models.json",
+    "$id": "./v1/entry-models.json",
     "$schema": "https://json-schema.org/draft/2020-12/schema",
 
     "title":"Schema for 14 of Standard BibTeX Entry Models",

@@ -57,7 +57,7 @@ async function processSchema(inputPath) {
         stripAnnotations(bundledSchema);
         mutateId(bundledSchema, inputPath, outputFile);
 
-        fs.writeFileSync(outputFile, JSON.stringify(bundledSchema, null, 4));
+        await fs.writeFileSync(outputFile, JSON.stringify(bundledSchema, null, 4), 'utf-8');
     } catch (err) {
         console.error(`Bundling failed for ${inputPath}:`, err);
         process.exitCode = 1;
