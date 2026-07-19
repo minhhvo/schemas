@@ -33,8 +33,6 @@ jobs:
           rm -f ./v*/bundle-*.schema.json
 
       - name: (5) Bundle schemas across all versions
-        env:
-          REPO_BASE_URI: ${{ vars.REPO_BASE_URI }}
         run: |
           shopt -s extglob nullglob globstar
           node schemaBundler.js ./v*/**/!(bundle-*).schema.json
