@@ -4,6 +4,16 @@ import { bundle } from "@hyperjump/json-schema/bundle";
 import { pathToFileURL } from "node:url";
 import { env } from 'node:process';
 
+import { addMediaTypePlugin } from "@hyperjump/browser";
+import { buildSchemaDocument } from "@hyperjump/json-schema/experimental";
+
+addMediaTypePlugin("application/schema+json", {
+    parse: async (response) => {
+        return buildSchemaDocument(await response.json(), response.url);
+    },
+    fileMatcher: (filePath) => filePath.endsWith(".json")
+});
+
 const BASE_URI = (env.REPO_BASE_URI || "").replace(/\/$/, "");
 
 if (!BASE_URI) {
