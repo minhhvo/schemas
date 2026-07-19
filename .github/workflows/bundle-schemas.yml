@@ -40,7 +40,7 @@ jobs:
           node schemaBundler.js ./v*/**/!(bundle-*).schema.json
 
       - name: (6) Commit and Push Bundled Schemas
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "chore(build): auto-generate schema bundles [skip ci]"
           file_pattern: '**/bundle-*.schema.json'
