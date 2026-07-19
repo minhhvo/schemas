@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import $RefParser from '@apidevtools/json-schema-ref-parser';
-
+import { bundle } from "@hyperjump/json-schema/bundle";
+import { pathToFileURL } from "node:url";
 import { env } from 'node:process';
 
 const BASE_URI = (env.REPO_BASE_URI || "").replace(/\/$/, "");
@@ -50,14 +50,15 @@ async function processSchema(inputPath) {
     try {
         const dir = path.dirname(inputPath);
         const outputFile = path.join(dir, `bundle-${file}`);
+        const fileUrl = pathToFileURL(path.resolve(inputPath)).href;
 
         console.log(`Bundling: ${inputPath} -> ${outputFile}`);
-        const bundledSchema = await $RefParser.bundle(inputPath);
+        const bundledSchema = await bundle(fileUrl);
 
         stripAnnotations(bundledSchema);
         mutateId(bundledSchema, inputPath, outputFile);
 
-        await fs.writeFileSync(outputFile, JSON.stringify(bundledSchema, null, 4), 'utf-8');
+        await fs.writeFile(outputFile, JSON.stringify(bundledSchema, null, 4), 'utf-8');
     } catch (err) {
         console.error(`Bundling failed for ${inputPath}:`, err);
         process.exitCode = 1;
