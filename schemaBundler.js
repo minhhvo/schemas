@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { bundle } from "@hyperjump/json-schema/bundle";
+import "@hyperjump/json-schema/draft-2020-12";
 import { pathToFileURL } from "node:url";
 import { env } from 'node:process';
 
